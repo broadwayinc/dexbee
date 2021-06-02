@@ -39,7 +39,7 @@ let db = new DexBee(
         }
     });
 
-async runDatabase() {
+async main() {
     await db.put('Cartoon', 'TomNJerry', data); // Write to data base
     
     let jerry = await db.get('Cartoon', 'TomNJerry', {
@@ -49,7 +49,7 @@ async runDatabase() {
     console.log(jerry); // logs [ [{ id: 2, name: 'Jerry'}] ]
 }
 
-runDatabase();
+main();
 
 ```
 <br/>
