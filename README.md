@@ -1,0 +1,2 @@
+# dexbee
+Simple IndexedDB framework
