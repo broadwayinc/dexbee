@@ -1,8 +1,10 @@
-We are going to build a indexedDB database using DexBee.
+We are going to build indexedDB database using DexBee.
 <br/>
 To create a new instance of DexBee, we should plan the schema of the database based on the data we plan to store.
+<br/>
+<br/>
 
-Here are the JSON data we plan to store in indexedDB.
+#### JSON data to store in indexedDB:
 
 ```ecmascript 6
 let character = [
@@ -21,7 +23,7 @@ let soundtrack = [
 ```
 <br/>
 
-Look at our schema object below:
+### The schema:
 ```ecmascript 6
 let schema = {
     stardust: {
@@ -43,9 +45,10 @@ Inside, the key name 'act' and 'ost' are the name of tables we will create.
 
 Each of these tables are going to be used to store our
 character and soundtrack data.
-
 <br/>
-Let's look at our table 'act' settings:
+<br/>
+
+#### Table Settings for 'act':
 
 ```ecmascript 6
 /*
@@ -75,7 +78,7 @@ By setting up these index keys, DexBee will be able to query these data afterwar
 <br/>
 <br/>
 
-Next, let's look at our settings for table 'ost':
+#### Table Settings for 'ost':
 ```ecmascript 6
 /*
 let soundtrack = [
@@ -113,7 +116,7 @@ For indexing, we will use the duration value.
 <br/>
 <br/>
 
-Lastly, Start DexBee instance as shown below:
+### Starting DexBee instance:
 
 ```ecmascript 6
 let schema = {
@@ -131,7 +134,7 @@ let schema = {
 let db = new DexBee(schema);
 ```
 
-To write and read data from indexedDB:
+#### Read and write data to indexedDB:
 ```ecmascript 6
 // Write data
 await db.put('stardust', 'act', character);

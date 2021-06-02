@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Setting up - Documentation</title>
+    <title>Getting Started - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -24,12 +24,12 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-1_setup.html">Setting up</a></li><li class="nav-item"><a href="tutorial-2_query.html">Queries</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DexBee.html">DexBee</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#put">put</a></span></li>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-1_setup.html">Getting Started</a></li><li class="nav-item"><a href="tutorial-2_query.html">Queries</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DexBee.html">DexBee</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#put">put</a></span></li>
 </nav>
 
 <div id="main">
     
-    <h1 class="page-title">Setting up</h1>
+    <h1 class="page-title">Getting Started</h1>
     
 
     <section>
@@ -39,10 +39,12 @@
 </header>
 
 <article>
-    <p>We are going to build a indexedDB database using DexBee.
+    <p>We are going to build indexedDB database using DexBee.
 <br/>
-To create a new instance of DexBee, we should plan the schema of the database based on the data we plan to store.</p>
-<p>Here are the JSON data we plan to store in indexedDB.</p>
+To create a new instance of DexBee, we should plan the schema of the database based on the data we plan to store.
+<br/>
+<br/></p>
+<h4>JSON data to store in indexedDB:</h4>
 <pre class="prettyprint source lang-ecmascript"><code>let character = [
     {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}},
     {name: &quot;UNE&quot;, birth: 3025, ethnicity: {planet: 'Jupiter', country: 'Great Red Republic'}},
@@ -58,7 +60,7 @@ let soundtrack = [
 ];
 </code></pre>
 <br/>
-<p>Look at our schema object below:</p>
+<h3>The schema:</h3>
 <pre class="prettyprint source lang-ecmascript"><code>let schema = {
     stardust: {
         act: {
@@ -76,9 +78,10 @@ let soundtrack = [
 <br/>
 Inside, the key name 'act' and 'ost' are the name of tables we will create.</p>
 <p>Each of these tables are going to be used to store our
-character and soundtrack data.</p>
+character and soundtrack data.
 <br/>
-Let's look at our table 'act' settings:
+<br/></p>
+<h4>Table Settings for 'act':</h4>
 <pre class="prettyprint source lang-ecmascript"><code>/*
 let character = [
     {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}},
@@ -104,7 +107,7 @@ we will use the key name 'name' as the unique ID of the record.</p>
 By setting up these index keys, DexBee will be able to query these data afterward.
 <br/>
 <br/></p>
-<p>Next, let's look at our settings for table 'ost':</p>
+<h4>Table Settings for 'ost':</h4>
 <pre class="prettyprint source lang-ecmascript"><code>/*
 let soundtrack = [
     ...
@@ -136,7 +139,7 @@ can make a unique id.</p>
 <p>For indexing, we will use the duration value.
 <br/>
 <br/></p>
-<p>Lastly, Start DexBee instance as shown below:</p>
+<h3>Starting DexBee instance:</h3>
 <pre class="prettyprint source lang-ecmascript"><code>let schema = {
     stardust: {
         act: {
@@ -151,7 +154,7 @@ can make a unique id.</p>
 }
 let db = new DexBee(schema);
 </code></pre>
-<p>To write and read data from indexedDB:</p>
+<h4>Read and write data to indexedDB:</h4>
 <pre class="prettyprint source lang-ecmascript"><code>// Write data
 await db.put('stardust', 'act', character);
 await db.put('stardust', 'ost', soundtrack);
@@ -171,7 +174,7 @@ let ost = await db.get('stardust', 'ost');
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Jun 03 2021 03:24:08 GMT+0900 (Korean Standard Time) using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

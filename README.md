@@ -52,3 +52,7 @@ async runDatabase() {
 runDatabase();
 
 ```
+<br/>
+
+### License
+[MIT](https://opensource.org/licenses/MIT)

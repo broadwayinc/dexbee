@@ -39,6 +39,7 @@ let schema = {
     }
 }
 let db = new DexBee(schema);
+
 await db.put('stardust', 'act', character);
 await db.put('stardust', 'ost', soundtrack);
 ```
