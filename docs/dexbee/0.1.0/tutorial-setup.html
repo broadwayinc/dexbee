@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Setting up - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-query.html">Queries</a></li><li class="nav-item"><a href="tutorial-setup.html">Setting up</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DexBee.html">DexBee</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#put">put</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Setting up</h1>
+    
+
+    <section>
+
+<header>
+    
+</header>
+
+<article>
+    <p>We are going to build a database about the movie 'Stardust' (Not a real movie).
+<br/>
+Here are the JSON data we plan to store in indexedDB.</p>
+<pre class="prettyprint source"><code>let character = [
+    {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}},
+    {name: &quot;UNE&quot;, birth: 3025, ethnicity: {planet: 'Jupiter', country: 'Great Red Republic'}},
+    {name: &quot;Baksa&quot;, birth: 2980, ethnicity: {planet: 'Mars', country: 'Eberswalde'}},
+    {name: &quot;Abu&quot;, birth: 3025, ethnicity: {planet: 'Earth', country: 'Brazil'}}
+];
+
+let soundtrack = [
+    {artist: &quot;DIA&quot;, title: 'Paradise', duration: '3:22'},
+    {artist: &quot;DIA&quot;, title: 'Sleepless Night', duration: '4:02'},
+    {artist: &quot;UNE&quot;, title: 'Aussie Boy', duration: '3:30'},
+    {artist: &quot;Coldplay&quot;, title: 'Paradise', duration: '4:37'}
+];
+</code></pre>
+<br/>
+<p>We are going to create a new instance of DexBee.
+<br/>
+But first, we should plan the schema of the database based on the data we plan to store.</p>
+<p>Look at our schema object below:</p>
+<pre class="prettyprint source"><code>let schema = {
+    stardust: {
+        act: {
+            uniqueKey: 'name',
+            index: ['ethnicity.planet', 'birth']
+        },
+        ost: {  
+            uniqueKey: ['artist', 'title'],
+            index: 'duration'
+        }
+    }
+}
+</code></pre>
+<p>The parent key name 'stardust' is the name of the indexedDB database we will create.
+<br/>
+Inside, the key name 'act' and 'ost' are the name of tables we will create.</p>
+<p>Each of these tables are going to be used to store our
+character and soundtrack data.</p>
+<br/>
+Let's look at our table 'act' settings:
+<pre class="prettyprint source"><code>/*
+
+let character = [
+    {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}},
+    ...
+];
+
+let schema = {
+    ...
+        act: {
+            uniqueKey: 'name',
+            index: ['ethnicity.planet', 'birth']
+        },
+    ...
+}
+
+*/
+</code></pre>
+<p>To store the character data inside table 'act', we should set the 'uniqueKey' and 'index'.
+<br/>
+Since we know each character names are unique,
+we will use the key name 'name' as the unique ID of the record.</p>
+<p>For indexing, key name of the character's planet and birth year is used.
+<br/>
+By setting up these index keys, DexBee will be able to query these data afterward.
+<br/>
+<br/></p>
+<p>Next, let's look at our settings for table 'ost':</p>
+<pre class="prettyprint source"><code>/*
+
+let soundtrack = [
+    ...
+    {artist: &quot;DIA&quot;, title: 'Paradise', duration: '3:22'},
+    {artist: &quot;Coldplay&quot;, title: 'Paradise', duration: '4:37'}
+];
+
+let schema = {
+    ...
+        ost: {  
+            uniqueKey: ['artist', 'title'],
+            index: 'duration'
+        }
+    ...
+}
+*/
+</code></pre>
+<p>Table 'ost' will be used to store our soundtrack data.
+<br/>
+Notice the setting of uniqueKey on 'ost' table is an array.</p>
+<p>Remember, we must set the 'uniqueKey' that can be used as unique id of the record.
+<br/>
+Otherwise, any new record that has a same unique id will overwrite the previous record.</p>
+<p>In our soundtracks data,
+we can predict neither of the key values will have a unique value.
+<br/>
+To solve this, setting up a compound key with 'artist' and 'title'
+can make a unique id.</p>
+<p>For indexing, we will use the duration value.
+<br/>
+<br/></p>
+<p>Lastly, Start DexBee instance as shown below:</p>
+<pre class="prettyprint source"><code>let schema = {
+    stardust: {
+        act: {
+            uniqueKey: 'name',
+            index: ['ethnicity.planet', 'birth']
+        },
+        ost: {  
+            uniqueKey: ['artist', 'title'],
+            index: 'duration'
+        }
+    }
+}
+let db = new DexBee(schema);
+</code></pre>
+<p>To write and read data from indexedDB:</p>
+<pre class="prettyprint source"><code>// Write data
+await db.put('stardust', 'act', characters);
+await db.put('stardust', 'ost', soundtracks);
+
+// Read data
+let act = await db.get('stardust', 'act');
+let ost = await db.get('stardust', 'ost');
+</code></pre>
+</article>
+
+</section>
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Jun 03 2021 00:26:04 GMT+0900 (Korean Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

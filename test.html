@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DexBee Test</title>
+    <script src="./lib/dexbee.js"></script>
+</head>
+<script>
+    let character = [
+        {name: "DIA", birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}},
+        {name: "UNE", birth: 3025, ethnicity: {planet: 'Jupiter', country: 'Great Red Republic'}},
+        {name: "Baksa", birth: 2980, ethnicity: {planet: 'Mars', country: 'Eberswalde'}},
+        {name: "Abu", birth: 3025, ethnicity: {planet: 'Earth', country: 'Brazil'}}
+    ];
+
+    let soundtrack = [
+        {artist: "DIA", title: 'Paradise', duration: '3:22'},
+        {artist: "DIA", title: 'Sleepless Night', duration: '4:02'},
+        {artist: "UNE", title: 'Aussie Boy', duration: '3:30'},
+        {artist: "Coldplay", title: 'Paradise', duration: '4:37'}
+    ];
+
+    let main = async () => {
+        let schema = {
+            stardust: {
+                act: {
+                    uniqueKey: 'name',
+                    index: ['ethnicity.planet', 'birth']
+                },
+                ost: {
+                    uniqueKey: ['artist', 'title'],
+                    index: 'duration'
+                }
+            }
+        };
+        let db = new DexBee(schema);
+
+        // Write data
+        await db.put('stardust', 'act', character);
+        await db.put('stardust', 'ost', soundtrack);
+
+        // Read data
+        let act = await db.get('stardust', 'act');
+        let ost = await db.get('stardust', 'ost');
+        console.log({act, ost});
+
+        let dia = await db.get('stardust', 'act', {where: 'DIA'});
+        console.log({dia});
+        let earthlings = await db.get('stardust', 'act', {where: {'ethnicity.planet': 'Earth'}});
+        console.log({earthlings});
+        let dia_and_earthlings =
+            await db.get('stardust', 'act', {
+                where: ['DIA', {'ethnicity.planet': 'Earth'}]
+            });
+        console.log({dia_and_earthlings});
+        let earth3025 =
+            await db.get('stardust', 'act', {
+                where: [ ['Earth', 3025] ]
+            });
+        console.log({earth3025});
+        let theTrack =
+            await db.get('stardust', 'ost', {
+                where: [ ['DIA'] ]
+            });
+        console.log({theTrack});
+        let only = await db.get('stardust', 'ost', {
+            only: 'title'
+        });
+        console.log({only});
+        let onlyWhere = await db.get('stardust', 'ost', {
+            only: 'title',
+            where: [['DIA']]
+        });
+        console.log({onlyWhere});
+        let desc = await db.get('stardust', 'ost', {
+            only: 'artist',
+            descending: true
+        });
+        console.log({desc});
+        let range = await db.get('stardust', 'act', {
+            where: 'Abu',
+            range: 2
+        });
+        console.log({range});
+        let range_desc = await db.get('stardust', 'act', {
+            where: 'UNE',
+            only: 'name',
+            range: 2,
+            descending: true
+        });
+        console.log({range_desc});
+        let range_dur = await db.get('stardust', 'ost', {
+            where: {duration: '3:00'},
+            range: {duration: '4:00'}
+        });
+        console.log({range_dur});
+    };
+    main();
+</script>
+<body>
+
+</body>
+</html>

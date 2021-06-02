@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Queries - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-1_setup.html">Setting up</a></li><li class="nav-item"><a href="tutorial-2_query.html">Queries</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DexBee.html">DexBee</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DexBee.html#put">put</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Queries</h1>
+    
+
+    <section>
+
+<header>
+    
+</header>
+
+<article>
+    <p>Query object is used when .get() or .delete() method is used.
+<br/>
+Although indexedDB does not provide complex queries like SQL, DexBee provides few simple features that are useful:</p>
+<ul>
+<li><a href="#where">Where</a></li>
+<li><a href="#only">Only</a></li>
+<li><a href="#descending">Descending</a></li>
+<li><a href="#range">Range</a></li>
+</ul>
+<br/>
+<p>We will be using the same data schema from <a href="./tutorial-1_setup.html">Setting up</a>:</p>
+<pre class="prettyprint source lang-ecmascript"><code>let character = [
+    {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}},
+    {name: &quot;UNE&quot;, birth: 3025, ethnicity: {planet: 'Jupiter', country: 'Great Red Republic'}},
+    {name: &quot;Baksa&quot;, birth: 2980, ethnicity: {planet: 'Mars', country: 'Eberswalde'}},
+    {name: &quot;Abu&quot;, birth: 3025, ethnicity: {planet: 'Earth', country: 'Brazil'}}
+];
+
+let soundtrack = [
+    {artist: &quot;DIA&quot;, title: 'Paradise', duration: '3:22'},
+    {artist: &quot;DIA&quot;, title: 'Sleepless Night', duration: '4:02'},
+    {artist: &quot;UNE&quot;, title: 'Aussie Boy', duration: '3:30'},
+    {artist: &quot;Coldplay&quot;, title: 'Paradise', duration: '4:37'}
+];
+
+let schema = {
+    stardust: {
+        act: {
+            uniqueKey: 'name',
+            index: ['ethnicity.planet', 'birth']
+        },
+        ost: {
+            uniqueKey: ['artist', 'title'],
+            index: 'duration'
+        }
+    }
+}
+let db = new DexBee(schema);
+await db.put('stardust', 'act', character);
+await db.put('stardust', 'ost', soundtrack);
+</code></pre>
+<br/>
+<h2><a name="where"></a>Where</h2>
+<p>By using 'where' on query argument, we can target specific unique ID of the record.</p>
+<p>Since unique ID of the 'act' table are the names of the characters,
+<br/>
+you can fetch the data of the character named 'DIA' from the table:</p>
+<pre class="prettyprint source lang-ecmascript"><code>let dia = await db.get('stardust', 'act', {where: ['DIA']});
+
+/* returns
+    [ 
+        [
+            {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}}
+        ]
+    ]
+ */
+</code></pre>
+<p>We can target value in indexed key:</p>
+<pre class="prettyprint source lang-ecmascript"><code>let earthlings =
+    await db.get('stardust', 'act', {
+        where: [{'ethnicity.planet': 'Earth'}]
+    });
+
+/* returns
+    [
+        [
+            {name: &quot;Abu&quot;, birth: 3025, ethnicity: {planet: 'Earth', country: 'Brazil'}},
+            {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}}
+        ]
+    ]
+ */
+</code></pre>
+<p>You can also do multiple 'where' at once:</p>
+<pre class="prettyprint source lang-ecmascript"><code>let dia_and_earthlings =
+    await db.get('stardust', 'act', {
+        where: ['DIA', {'ethnicity.planet': 'Earth'}]
+    });
+
+/* returns
+    [
+        [
+            {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}}
+        ],
+        [
+            {name: &quot;Abu&quot;, birth: 3025, ethnicity: {planet: 'Earth', country: 'Brazil'}},
+            {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}}
+        ]
+    ]
+ */
+</code></pre>
+<p>You can also match multiple values based on array of index key values:</p>
+<pre class="prettyprint source lang-ecmascript"><code>let adultEarthling =
+    await db.get('stardust', 'act', {
+        where: [['Earth', 3025]]
+    });
+
+/* returns
+    [
+        [
+            {name: &quot;Abu&quot;, birth: 3025, ethnicity: {planet: 'Earth', country: 'Brazil'}}
+        ]
+    ]
+ */
+</code></pre>
+<br/>
+<p>If the unique ID is a compound key, use array value that match the compound key.
+DexBee will try to match the values even if the value array length does not match the compound key length.</p>
+<p>Note:
+<br/>
+If multiple index keys are set in the table, DexBee will always use that index keys to match the given array values of '
+where'
+<br/>
+regardless whether uniqueKey is a compound key or not.
+<br/>
+Since table 'ost' only have one index key, DexBee will try to match the compound key values of unique ID.</p>
+<pre class="prettyprint source lang-ecmascript"><code>let theTrack =
+    await db.get('stardust', 'ost', {
+        where: [['DIA', 'Paradise']]
+    });
+
+/* returns
+    [
+        [
+            {artist: &quot;DIA&quot;, title: 'Paradise', duration: '3:22'}
+        ]
+    ]
+ */
+
+let theTracks =
+    await db.get('stardust', 'ost', {
+        where: [['DIA']]
+    });
+
+/* returns
+    [
+        [
+            {artist: &quot;DIA&quot;, title: 'Paradise', duration: '3:22'},
+            {artist: &quot;DIA&quot;, title: 'Sleepless Night', duration: '4:02'}
+        ]
+    ]
+ */
+</code></pre>
+<br/>
+<h2><a name="only"></a>Only</h2>
+<p>Retrieve value in specific key from the record:</p>
+<pre class="prettyprint source lang-ecmascript"><code>let only = await db.get('stardust', 'ost', {
+    only: 'title'
+});
+/* returns
+    [&quot;Paradise&quot;, &quot;Paradise&quot;, &quot;Sleepless Night&quot;, &quot;Aussie Boy&quot;]
+ */
+
+// Any combination of query options can be used
+let onlyWhere = await db.get('stardust', 'ost', {
+    only: 'title',
+    where: [['DIA']]
+});
+/* returns
+    [ 
+        [&quot;Paradise&quot;, &quot;Paradise&quot;, &quot;Sleepless Night&quot;, &quot;Aussie Boy&quot;]
+    ]
+ */
+</code></pre>
+<br/>
+<h2><a name="descending"></a>Descending</h2>
+<p>Retrieves value in descending order.
+<br/>
+Order of the records are in lexicographic order of the unique id,
+<br/>
+(When index keys are used in 'where', records are ordered in index key values)</p>
+<pre class="prettyprint source lang-ecmascript"><code>let desc = await db.get('stardust', 'ost', {
+    only: 'artist',
+    descending: true
+});
+/* returns
+    [&quot;UNE&quot;, &quot;DIA&quot;, &quot;DIA&quot;, &quot;Coldplay&quot;]
+ */
+</code></pre>
+<br/>
+<h2><a name="range"></a>Range</h2>
+<p>Get 2 records preceding from character 'Abu':</p>
+<pre class="prettyprint source lang-ecmascript"><code>let range = await db.get('stardust', 'act', {
+    where: 'Abu',
+    range: 2
+});
+/* returns
+    [
+        [
+            {name: &quot;Abu&quot;, birth: 3025, ethnicity: {planet: 'Earth', country: 'Brazil'}},
+            {name: &quot;Baksa&quot;, birth: 2980, ethnicity: {planet: 'Mars', country: 'Eberswalde'}}
+        ]
+    ]
+ */
+</code></pre>
+<p>Get 2 records preceding from character 'UNE' in descending order:</p>
+<pre class="prettyprint source lang-ecmascript"><code>let range = await db.get('stardust', 'act', {
+    where: 'UNE',
+    only: 'name',
+    range: 2,
+    descending: true
+});
+/* returns
+    [
+        [ 'UNE', 'DIA' ]
+    ]
+ */
+</code></pre>
+<p>Get all records matching from 'where' to 'range':</p>
+<pre class="prettyprint source lang-ecmascript"><code>let range = await db.get('stardust', 'ost', {
+    where: {duration: '3:00'},
+    range: {duration: '4:00'}
+});
+/* returns
+    [
+        [
+            {artist: &quot;DIA&quot;, title: 'Paradise', duration: '3:22'},
+            {artist: &quot;UNE&quot;, title: 'Aussie Boy', duration: '3:30'}
+        ]
+    ]
+ */
+</code></pre>
+</article>
+
+</section>
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Jun 03 2021 03:24:08 GMT+0900 (Korean Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
