@@ -186,7 +186,7 @@ let onlyWhere = await db.get('stardust', 'ost', {
 });
 /* returns
     [ 
-        ["Paradise", "Paradise", "Sleepless Night", "Aussie Boy"]
+        ["Paradise", "Sleepless Night"]
     ]
  */
 ```
