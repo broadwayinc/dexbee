@@ -21,7 +21,7 @@ import {DexBee} from 'dexbee';
 ```
 <br/>
 
-### Getting Started
+### Basic usage
 
 ```
 let data = [
