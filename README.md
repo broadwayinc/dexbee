@@ -60,4 +60,4 @@ Post bugs and feature requests [Here](https://github.com/broadwayinc/dexbee/issu
 Any Contributions are welcomed :)
 
 ### License
-MIT License. Copyright (c) 2021 broadway Inc.
+MIT License. Copyright (c) 2021-Present broadway Inc.
