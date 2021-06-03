@@ -6,7 +6,7 @@
   "scripts": {
     "jsdoc": "npx jsdoc --configure jsdoc.json --readme README.md --verbose",
     "build": "npx webpack --env mode=production",
-    "uploaddoc": "aws s3 sync ./docs/ s3://dexbee.io/ --acl public-read --profile mpbaksa",
+    "uploaddoc": "aws s3 sync ./docs/dexbee/0.1.0/ s3://document-dexbee/ --acl public-read --profile mpbaksa",
     "uploadcdn": "func() { aws s3 sync ./dist/ s3://broadwayinc.dev/jslib/dexbee/\"$1\" --acl public-read --profile mpbaksa; }; func"
   },
   "repository": {
