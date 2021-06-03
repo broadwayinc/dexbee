@@ -1,0 +1,9 @@
+node_modules/
+docs/
+dist/
+tutorials/
+.babelrc
+.gitignore
+jsdoc.json
+test.html
+webpack.config.js

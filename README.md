@@ -54,5 +54,10 @@ main();
 ```
 <br/>
 
+### Issues
+Post bugs and feature requests [Here](https://github.com/broadwayinc/dexbee/issues).
+<br/>
+Any Contributions are welcomed :)
+
 ### License
-[MIT](https://opensource.org/licenses/MIT)
+MIT License. Copyright (c) 2021 broadway Inc.

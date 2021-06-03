@@ -27,12 +27,12 @@ let soundtrack = [
 ];
 
 let schema = {
-    stardust: {
-        act: {
+    Stardust: {
+        Character: {
             uniqueKey: 'name',
             index: ['ethnicity.planet', 'birth']
         },
-        ost: {
+        Soundtrack: {
             uniqueKey: ['artist', 'title'],
             index: 'duration'
         }
@@ -40,8 +40,8 @@ let schema = {
 }
 let db = new DexBee(schema);
 
-await db.put('stardust', 'act', character);
-await db.put('stardust', 'ost', soundtrack);
+await db.put('Stardust', 'Character', character);
+await db.put('Stardust', 'Soundtrack', soundtrack);
 ```
 
 <br/>
@@ -50,12 +50,12 @@ await db.put('stardust', 'ost', soundtrack);
 
 By using 'where' on query argument, we can target specific unique ID of the record.
 
-Since unique ID of the 'act' table are the names of the characters,
+Since unique ID of the 'Character' table are the names of the characters,
 <br/>
 you can fetch the data of the character named 'DIA' from the table:
 
 ```ecmascript 6
-let dia = await db.get('stardust', 'act', {where: ['DIA']});
+let dia = await db.get('Stardust', 'Character', {where: ['DIA']});
 
 /* returns
     [ 
@@ -70,7 +70,7 @@ We can target value in indexed key:
 
 ```ecmascript 6
 let earthlings =
-    await db.get('stardust', 'act', {
+    await db.get('Stardust', 'Character', {
         where: [{'ethnicity.planet': 'Earth'}]
     });
 
@@ -88,7 +88,7 @@ You can also do multiple 'where' at once:
 
 ```ecmascript 6
 let dia_and_earthlings =
-    await db.get('stardust', 'act', {
+    await db.get('Stardust', 'Character', {
         where: ['DIA', {'ethnicity.planet': 'Earth'}]
     });
 
@@ -109,7 +109,7 @@ You can also match multiple values based on array of index key values:
 
 ```ecmascript 6
 let adultEarthling =
-    await db.get('stardust', 'act', {
+    await db.get('Stardust', 'Character', {
         where: [['Earth', 3025]]
     });
 
@@ -134,11 +134,11 @@ where'
 <br/>
 regardless whether uniqueKey is a compound key or not.
 <br/>
-Since table 'ost' only have one index key, DexBee will try to match the compound key values of unique ID.
+Since table 'Soundtrack' only have one index key, DexBee will try to match the compound key values of unique ID.
 
 ```ecmascript 6
 let theTrack =
-    await db.get('stardust', 'ost', {
+    await db.get('Stardust', 'Soundtrack', {
         where: [['DIA', 'Paradise']]
     });
 
@@ -151,7 +151,7 @@ let theTrack =
  */
 
 let theTracks =
-    await db.get('stardust', 'ost', {
+    await db.get('Stardust', 'Soundtrack', {
         where: [['DIA']]
     });
 
@@ -172,7 +172,7 @@ let theTracks =
 Retrieve value in specific key from the record:
 
 ```ecmascript 6
-let only = await db.get('stardust', 'ost', {
+let only = await db.get('Stardust', 'Soundtrack', {
     only: 'title'
 });
 /* returns
@@ -180,7 +180,7 @@ let only = await db.get('stardust', 'ost', {
  */
 
 // Any combination of query options can be used
-let onlyWhere = await db.get('stardust', 'ost', {
+let onlyWhere = await db.get('Stardust', 'Soundtrack', {
     only: 'title',
     where: [['DIA']]
 });
@@ -202,7 +202,7 @@ Order of the records are in lexicographic order of the unique id,
 (When index keys are used in 'where', records are ordered in index key values)
 
 ```ecmascript 6
-let desc = await db.get('stardust', 'ost', {
+let desc = await db.get('Stardust', 'Soundtrack', {
     only: 'artist',
     descending: true
 });
@@ -218,7 +218,7 @@ let desc = await db.get('stardust', 'ost', {
 Get 2 records preceding from character 'Abu':
 
 ```ecmascript 6
-let range = await db.get('stardust', 'act', {
+let range = await db.get('Stardust', 'Character', {
     where: 'Abu',
     range: 2
 });
@@ -235,7 +235,7 @@ let range = await db.get('stardust', 'act', {
 Get 2 records preceding from character 'UNE' in descending order:
 
 ```ecmascript 6
-let range = await db.get('stardust', 'act', {
+let range = await db.get('Stardust', 'Character', {
     where: 'UNE',
     only: 'name',
     range: 2,
@@ -251,7 +251,7 @@ let range = await db.get('stardust', 'act', {
 Get all records matching from 'where' to 'range':
 
 ```ecmascript 6
-let range = await db.get('stardust', 'ost', {
+let range = await db.get('Stardust', 'Soundtrack', {
     where: {duration: '3:00'},
     range: {duration: '4:00'}
 });

@@ -2,14 +2,16 @@
   "name": "dexbee",
   "version": "0.1.0",
   "description": "Simple indexedDB framework",
-  "main": "lib/dexbee.js",
+  "main": "src/dexbee.js",
   "scripts": {
     "jsdoc": "npx jsdoc --configure jsdoc.json --readme README.md --verbose",
-    "build": "npx webpack --env mode=production"
+    "build": "npx webpack --env mode=production",
+    "uploaddoc": "aws s3 sync ./docs/ s3://dexbee.io/ --acl public-read --profile mpbaksa",
+    "uploadcdn": "func() { aws s3 sync ./dist/ s3://broadwayinc.dev/jslib/dexbee/\"$1\" --acl public-read --profile mpbaksa; }; func"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/broadwayinc/dexbee.git"
+    "url": "https://dexbee.io"
   },
   "keywords": [
     "indexeddb"
@@ -19,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/broadwayinc/dexbee/issues"
   },
-  "homepage": "https://github.com/broadwayinc/dexbee#readme",
+  "homepage": "https://dexbee.io",
   "devDependencies": {
     "@babel/core": "^7.13.15",
     "@babel/preset-env": "^7.13.15",

@@ -62,26 +62,26 @@ let soundtrack = [
 <br/>
 <h3>The schema:</h3>
 <pre class="prettyprint source lang-ecmascript"><code>let schema = {
-    stardust: {
-        act: {
+    Stardust: {
+        Character: {
             uniqueKey: 'name',
             index: ['ethnicity.planet', 'birth']
         },
-        ost: {  
+        Soundtrack: {  
             uniqueKey: ['artist', 'title'],
             index: 'duration'
         }
     }
 }
 </code></pre>
-<p>The parent key name 'stardust' is the name of the indexedDB database we will create.
+<p>The parent key name 'Stardust' is the name of the indexedDB database we will create.
 <br/>
-Inside, the key name 'act' and 'ost' are the name of tables we will create.</p>
+Inside, the key name 'Character' and 'Soundtrack' are the name of tables we will create.</p>
 <p>Each of these tables are going to be used to store our
 character and soundtrack data.
 <br/>
 <br/></p>
-<h4>Table Settings for 'act':</h4>
+<h4>Table Settings for 'Character':</h4>
 <pre class="prettyprint source lang-ecmascript"><code>/*
 let character = [
     {name: &quot;DIA&quot;, birth: 3014, ethnicity: {planet: 'Earth', country: 'Korea'}},
@@ -90,7 +90,7 @@ let character = [
 
 let schema = {
     ...
-        act: {
+        Character: {
             uniqueKey: 'name',
             index: ['ethnicity.planet', 'birth']
         },
@@ -98,7 +98,7 @@ let schema = {
 }
 */
 </code></pre>
-<p>To store the character data inside table 'act', we should set the 'uniqueKey' and 'index'.
+<p>To store the character data inside table 'Character', we should set the 'uniqueKey' and 'index'.
 <br/>
 Since we know each character names are unique,
 we will use the key name 'name' as the unique ID of the record.</p>
@@ -107,7 +107,7 @@ we will use the key name 'name' as the unique ID of the record.</p>
 By setting up these index keys, DexBee will be able to query these data afterward.
 <br/>
 <br/></p>
-<h4>Table Settings for 'ost':</h4>
+<h4>Table Settings for 'Soundtrack':</h4>
 <pre class="prettyprint source lang-ecmascript"><code>/*
 let soundtrack = [
     ...
@@ -117,7 +117,7 @@ let soundtrack = [
 
 let schema = {
     ...
-        ost: {  
+        Soundtrack: {  
             uniqueKey: ['artist', 'title'],
             index: 'duration'
         }
@@ -125,9 +125,9 @@ let schema = {
 }
 */
 </code></pre>
-<p>Table 'ost' will be used to store our soundtrack data.
+<p>Table 'Soundtrack' will be used to store our soundtrack data.
 <br/>
-Notice the setting of uniqueKey on 'ost' table is an array.</p>
+Notice the setting of uniqueKey on 'Soundtrack' table is an array.</p>
 <p>Remember, we must set the 'uniqueKey' that can be used as unique id of the record.
 <br/>
 Otherwise, any new record that has a same unique id will overwrite the previous record.</p>
@@ -141,12 +141,12 @@ can make a unique id.</p>
 <br/></p>
 <h3>Starting DexBee instance:</h3>
 <pre class="prettyprint source lang-ecmascript"><code>let schema = {
-    stardust: {
-        act: {
+    Stardust: {
+        Character: {
             uniqueKey: 'name',
             index: ['ethnicity.planet', 'birth']
         },
-        ost: {  
+        Soundtrack: {  
             uniqueKey: ['artist', 'title'],
             index: 'duration'
         }
@@ -156,12 +156,12 @@ let db = new DexBee(schema);
 </code></pre>
 <h4>Read and write data to indexedDB:</h4>
 <pre class="prettyprint source lang-ecmascript"><code>// Write data
-await db.put('stardust', 'act', character);
-await db.put('stardust', 'ost', soundtrack);
+await db.put('Stardust', 'Character', character);
+await db.put('Stardust', 'Soundtrack', soundtrack);
 
 // Read data
-let act = await db.get('stardust', 'act');
-let ost = await db.get('stardust', 'ost');
+let char = await db.get('Stardust', 'Character');
+let soundtrk = await db.get('Stardust', 'Soundtrack');
 </code></pre>
 <br/>
 <p>Next: <a href="./tutorial-2_query.html">Queries</a></p>
