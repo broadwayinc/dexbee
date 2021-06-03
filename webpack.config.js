@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = (env) => {
     return {
         mode: env.mode || 'development',
-        entry: path.resolve(__dirname, './lib/dexbee.js'),
+        entry: ['babel-polyfill', path.resolve(__dirname, './lib/dexbee.js')],
         output: {
             path: path.resolve(__dirname, "dist"),
             filename: './dexbee.js',
