@@ -57,6 +57,8 @@ main();
 ### Documentation
 To check out [tutorials](https://dexbee.io/tutorial-1_setup.html) and manual, visit [dexbee.io](https://dexbee.io)
 
+<br/>
+
 ### Issues
 Post bugs and feature requests [Here](https://github.com/broadwayinc/dexbee/issues).
 <br/>
