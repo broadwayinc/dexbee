@@ -4,9 +4,12 @@
   "description": "Simple indexedDB framework",
   "main": "src/dexbee.js",
   "scripts": {
+    "dist": "npm run jsdoc && npm run build && npm run doc && npm run cdn",
     "jsdoc": "npx jsdoc --configure jsdoc.json --readme README.md --verbose",
     "build": "npx webpack --env mode=production",
-    "uploaddoc": "func() { aws s3 sync ./docs/dexbee/\"$1\"/ s3://document-dexbee/ --acl public-read --profile mpbaksa; } func",
+    "doc": "npm run uploaddoc -- $npm_package_version",
+    "cdn": "npm run uploadcdn -- $npm_package_version",
+    "uploaddoc": "func() { aws s3 sync ./docs/dexbee/\"$1\"/ s3://document-dexbee/ --acl public-read --profile mpbaksa; }; func",
     "uploadcdn": "func() { aws s3 sync ./dist/ s3://broadwayinc.dev/jslib/dexbee/\"$1\" --acl public-read --profile mpbaksa; }; func"
   },
   "repository": {
