@@ -9,8 +9,8 @@
     "build": "npx webpack --env mode=production",
     "doc": "npm run uploaddoc -- $npm_package_version",
     "cdn": "npm run uploadcdn -- $npm_package_version",
-    "uploaddoc": "func() { aws s3 sync ./docs/dexbee/\"$1\"/ s3://document-dexbee/ --acl public-read --profile mpbaksa; }; func",
-    "uploadcdn": "func() { aws s3 sync ./dist/ s3://broadwayinc.dev/jslib/dexbee/\"$1\" --acl public-read --profile mpbaksa; }; func"
+    "uploaddoc": "func() { aws s3 sync ./docs/dexbee/\"$1\"/ s3://document-dexbee/ --acl public-read; }; func",
+    "uploadcdn": "func() { aws s3 sync ./dist/ s3://broadwayinc.dev/jslib/dexbee/\"$1\" --acl public-read; }; func"
   },
   "repository": {
     "type": "git",
