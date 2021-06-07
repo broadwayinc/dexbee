@@ -6,4 +6,6 @@ tutorials/
 .gitignore
 jsdoc.json
 test.html
+src/
 webpack.config.js
+.idea/
