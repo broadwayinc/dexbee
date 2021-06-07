@@ -2,7 +2,7 @@
   "name": "dexbee",
   "version": "0.1.3",
   "description": "Simple indexedDB framework",
-  "main": "lib/dexbee.js",
+  "main": "src/dexbee.js",
   "scripts": {
     "dist": "npm run jsdoc && npm run build && npx babel ./src/dexbee.js -d ./lib && npm run doc && npm run cdn",
     "jsdoc": "npx jsdoc --configure jsdoc.json --readme README.md --verbose",

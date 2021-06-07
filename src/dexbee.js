@@ -133,6 +133,7 @@ class DexBee {
      * @param {any[] | number} [query.range] - Number of data to fetch after key. (positive = descending, negative = ascending).<br/>Or key values to fetch in between.
      * @param {boolean} [query.descending] - Descending when true.
      * @param {string} [query.only] - Key value to fetch.
+     * @param {string} [query.unique] - Fetch only unique indexes.
      * @returns {Promise<array[]>} - Fetched data.
      */
     async get(dbname, table, query) {
@@ -273,6 +274,7 @@ class DexBee {
                                     let get = database.openCursor(query, 'nextunique');
                                     let data_push = [];
                                     get.onsuccess = e => {
+
                                         let data = e.target.result;
                                         if (data) {
                                             let value = data.value;
