@@ -51,7 +51,7 @@ class DexBee {
                         for (let table in schema[dbname]) {
                             let keyPath = schema[dbname][table].uniqueKey,
                                 index = schema[dbname][table].index;
-                            let chk = {table, keyPath, index};
+                            let chk = { table, keyPath, index };
                             for (let v in chk)
                                 if (!chk[v])
                                     rej(`MISSING_SCHEMA: ${v}`);
@@ -59,7 +59,7 @@ class DexBee {
                             if (newdb.objectStoreNames.contains(table))
                                 newdb.deleteObjectStore(table);
 
-                            let store = newdb.createObjectStore(table, {keyPath});
+                            let store = newdb.createObjectStore(table, { keyPath });
                             if (index) {
                                 if (Array.isArray(index)) {
                                     let indexParse = [];
@@ -68,12 +68,12 @@ class DexBee {
                                             indexParse.push(i[0]);
                                         else indexParse.push(i);
                                     }
-                                    store.createIndex(table + '_index', indexParse, {unique: false});
+                                    store.createIndex(table + '_index', indexParse, { unique: false });
                                     for (let i of index)
-                                        store.createIndex(Array.isArray(i) ? i[0] : i, i, {unique: false});
+                                        store.createIndex(Array.isArray(i) ? i[0] : i, i, { unique: false });
 
                                 } else
-                                    store.createIndex(index, index, {unique: false});
+                                    store.createIndex(index, index, { unique: false });
                             }
                         }
 
@@ -174,7 +174,7 @@ class DexBee {
     async _exec(dbname, table, query, exec) {
         await this.ready;
 
-        let {where = null, range, unique, only, descending} = query || {};
+        let { where = null, range, unique, only, descending } = query || {};
 
         let _descending = typeof descending === 'boolean' ? descending : (typeof range === 'number' ? (range < 0) : false);
 
@@ -238,7 +238,7 @@ class DexBee {
                                 upperBound = Array.isArray(k) ? [...k] : k ? [k] : _descending ? ['\uffff'] : [null];
                             upperBound.push('\uffff');
                         }
-                        return {where: k, upperBound};
+                        return { where: k, upperBound };
                     }
                     return k;
                 };
@@ -258,7 +258,7 @@ class DexBee {
                 } else if (typeof keyRange === 'object' && keyRange.where)
                     query = window.IDBKeyRange.bound(where, keyRange.upperBound);
 
-                return {database, query};
+                return { database, query };
             };
 
             switch (mode) {
@@ -268,7 +268,7 @@ class DexBee {
                     for (let k of where)
                         list.push(new Promise((res, rej) => {
                             let reIndex = locateIndex(k);
-                            let {database, query} = reIndex;
+                            let { database, query } = reIndex;
                             if (exec === 'get') {
                                 if (unique) {
                                     let get = database.openCursor(query, 'nextunique');
@@ -412,4 +412,20 @@ class DexBee {
     }
 }
 
-module.exports = {DexBee};
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([], factory);
+    } else if (typeof exports === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory();
+    } else {
+        // Browser globals (root is window)
+        root.jsonCrawler = factory();
+    }
+}(this, function () {
+    // Your function here
+    return DexBee;
+}));

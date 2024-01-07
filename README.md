@@ -20,7 +20,7 @@ npm i dexbee
 And in your javascript:
 
 ```
-import {DexBee} from 'dexbee';
+import DexBee from 'dexbee';
 ```
 
 ## Basic usage

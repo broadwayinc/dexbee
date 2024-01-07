@@ -1,14 +1,7 @@
 {
-  "tags": {
-    "allowUnknownTags": true,
-    "dictionaries": [
-      "jsdoc"
-    ]
-  },
   "source": {
     "include": [
-      "src",
-      "package.json",
+      "dexbee.js",
       "README.md"
     ],
     "includePattern": ".js$",
@@ -29,9 +22,7 @@
   "opts": {
     "destination": "./docs/",
     "encoding": "utf8",
-    "private": true,
     "tutorials": "./tutorials",
-    "recurse": true,
     "template": "./node_modules/minami"
   }
 }
