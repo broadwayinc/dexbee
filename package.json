@@ -1,14 +1,12 @@
 {
   "name": "dexbee",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Simple indexedDB framework",
   "main": "dexbee.js",
   "scripts": {
     "test": "node node_modules/basic-node-server/index.js 3300",
-    "dist": "npm publish && npm run doc",
     "jsdoc": "npx jsdoc --configure jsdoc.json --readme README.md --verbose",
-    "doc": "npm run uploaddoc -- $npm_package_version",
-    "uploaddoc": "func() { aws s3 sync ./docs/dexbee/ s3://document-dexbee/ --acl public-read; }; func"
+    "distdoc": "aws s3 sync ./docs/ s3://document-dexbee/ --acl public-read"
   },
   "repository": {
     "type": "git",
