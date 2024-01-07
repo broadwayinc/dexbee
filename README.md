@@ -8,7 +8,7 @@ DexBee is a simple lightweight indexedDB framework for easy setup and indexing.
 Add script tag inside &lt;head&gt;&lt;/head&gt;
 
 ```
-<script src="https://broadwayinc.dev/jslib/dexbee/0.1.2/dexbee.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dexbee@latest/dist/dexbee.js"></script>
 ```
 
 ### Webpack
